@@ -45,15 +45,15 @@ func main() {
 		host := scanner.Text()
 
 		wg.Add(1)
-		semaphore <- struct{}{} // Semaforo Bloqueado
+		semaphore <- struct{}{} 
 		go func(host string) {
 			defer func() {
-				<-semaphore // Semaforo Liberado
+				<-semaphore 
 				wg.Done()
 				bar.Incr()
 			}()
 
-			outputFile := host + ".txt" // Nombre del archivo
+			outputFile := host + ".txt" 
 			cmd := exec.Command("nmap", "-sCV", "--min-rate", "10000", "-Pn", "-oN", outputFile, host)
 			err := cmd.Run()
 			if err != nil {
@@ -61,7 +61,6 @@ func main() {
 				return
 			}
 
-			// Simulating delay to show progress
 			time.Sleep(500 * time.Millisecond)
 		}(host)
 	}
